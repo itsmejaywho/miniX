@@ -9,6 +9,9 @@ function SignUp(){
 
     const [Fname, setFname] = useState('')
     const [Lname, setLname] = useState('')
+    const [username, setUsername] = useState('')
+    const [emailAddress, setEmailAddress] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleAddUser = async()=>{
         if(!Fname || !Lname ){
@@ -17,15 +20,17 @@ function SignUp(){
         }
 
         const {data, error } = await supabase
-        .from('user')
+        .from('userInfo')
         .insert({
             name: Fname,
-            surname: Lname
+            surname: Lname,
+            username: username,
+            emailAddress: emailAddress,
+            password: password
         })
         .select()
 
-        console.log(data)
-
+console.log(data)
 
         if(error){
             console.log(error)
@@ -43,9 +48,11 @@ function SignUp(){
                     <Inputs source={User} message='Last Name' value={Lname} onChange={(e) => setLname(e.target.value)} />
                 </div>
 
-                <Inputs />
-                <Inputs />
-                <Inputs />
+                <Inputs message='Username' value={username} onChange={(e)=> setUsername(e.target.value)} />
+                <Inputs message='Email Address' value={emailAddress} onChange={(e)=> setEmailAddress(e.target.value)} />
+                <Inputs message='Password' value={password} onChange={(e)=> setPassword(e.target.value)} />
+
+                <button className='bg-white text-black p-3 rounded-[10px]' onClick={handleAddUser}>Create Account</button>
             </div>
         </>
     )
