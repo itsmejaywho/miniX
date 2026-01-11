@@ -24,7 +24,7 @@ function SignUp(){
         .insert({
             firstName: Fname,
             lastName: Lname,
-            username: username,
+            userName: username,
             emailAddress: emailAddress,
             password: password
         })
