@@ -22,8 +22,8 @@ function SignUp(){
         const {data, error } = await supabase
         .from('userInfo')
         .insert({
-            name: Fname,
-            surname: Lname,
+            firstName: Fname,
+            lastName: Lname,
             username: username,
             emailAddress: emailAddress,
             password: password
