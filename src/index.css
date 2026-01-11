@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body {
+  @apply h-screen
+}
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+button{
+  @apply cursor-pointer
+}
