@@ -12,6 +12,17 @@ function SignUp(){
     const [username, setUsername] = useState('')
     const [emailAddress, setEmailAddress] = useState('')
     const [password, setPassword] = useState('')
+ 
+
+    const handleChange = (setWhat, {capitalize = false} = {}) => (e) => {
+        let toUpper = e.target.value;
+
+        if(capitalize){
+            toUpper = toUpper.charAt(0).toUpperCase() + toUpper.slice(1)
+        }
+
+        setWhat(toUpper)
+    }
 
     const handleAddUser = async()=>{
         if(!Fname || !Lname ){
@@ -30,7 +41,7 @@ function SignUp(){
         })
         .select()
 
-console.log(data)
+        console.log(data)
 
         if(error){
             console.log(error)
@@ -44,13 +55,13 @@ console.log(data)
         <>
             <div className='bg-[#282825]  w-[70%] h-[85%] rounded-[15px] px-17 flex flex-col gap-6'>
                 <div className='flex gap-4 w-full'>
-                    <Inputs source={User} message='First Name' value={Fname} onChange={(e) => setFname(e.target.value)} />
-                    <Inputs source={User} message='Last Name' value={Lname} onChange={(e) => setLname(e.target.value)} />
+                    <Inputs source={User} message='First Name' value={Fname} onChange={handleChange(setFname, {capitalize: true})} />
+                    <Inputs source={User} message='Last Name' value={Lname} onChange={handleChange(setLname, {capitalize: true})} />
                 </div>
 
-                <Inputs message='Username' value={username} onChange={(e)=> setUsername(e.target.value)} />
-                <Inputs message='Email Address' value={emailAddress} onChange={(e)=> setEmailAddress(e.target.value)} />
-                <Inputs message='Password' value={password} onChange={(e)=> setPassword(e.target.value)} />
+                <Inputs message='Username' value={username} onChange={handleChange(setUsername)} />
+                <Inputs message='Email Address' value={emailAddress} onChange={handleChange(setEmailAddress)} />
+                <Inputs message='Password' value={password} onChange={handleChange(setPassword)} />
 
                 <button className='bg-white text-black p-3 rounded-[10px]' onClick={handleAddUser}>Create Account</button>
             </div>
