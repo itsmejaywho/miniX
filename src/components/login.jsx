@@ -4,29 +4,41 @@ import supabase from '../../supabaseServer/supabase.jsx'
 import Google from '../assets/google.png'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import bcrypt from 'bcryptjs'
 
 
 function Login(){
 
     const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
     const handleLogin = async ()=>{
 
-        if(!email) return alert('email first')
+        if(!email && !password) return alert('email first')
 
-        const {data, error} = await supabase
+        const {data} = await supabase
         .from('userInfo')
         .select('*')
-        .eq('name', email)
+        .eq('userName', email)
+        .limit(1)
 
-
-        if(data.length > 0){
-            alert('found it')
-        }else {
-            alert('doesnt exist')
-            setEmail('')
+        if(data && data.length > 0){
+            const user = data[0]
+            const passwordMatch = await bcrypt.compare(password, user.password)
+            
+            if(passwordMatch){
+                navigate('/homepage')
+                console.log(user.id)
+            } else {
+                alert('Invalid credentials')
+            }
+        } else {
+            alert('User not found')
         }
+        
+        
+
     }
 
     return(
@@ -53,7 +65,10 @@ function Login(){
                 value={email}
                 onChange={(e)=> setEmail(e.target.value)}
                 />
-                <Inputs message='Password' type='password'/>
+                <Inputs message='Password' type='password'
+                value={password}
+                onChange={(e)=> setPassword(e.target.value)}
+                />
                 <button className='p-3 w-[90%] bg-[#0172da] rounded-[10px] text-[.8rem] tracking-[4px] mt-2' 
                     onClick={handleLogin}
                 >Login</button>
