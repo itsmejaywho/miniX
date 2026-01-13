@@ -3,10 +3,12 @@ import User from '../assets/user.svg'
 import Username from '../assets/username.svg'
 import { useState } from 'react'
 import supabase from '../../supabaseServer/supabase.jsx'
+import { useNavigate } from 'react-router-dom'
 
 
 function SignUp(){
 
+    const navigate = useNavigate()
     const [Fname, setFname] = useState('')
     const [Lname, setLname] = useState('')
     const [username, setUsername] = useState('')
@@ -64,6 +66,10 @@ function SignUp(){
                 <Inputs message='Password' value={password} onChange={handleChange(setPassword)} />
 
                 <button className='bg-white text-black p-3 rounded-[10px]' onClick={handleAddUser}>Create Account</button>
+                <div className='flex gap-1 text-white text-[.7rem]'>
+                    <p>Already have an account?</p>
+                    <button className='tracking-[2px] text-amber-300' onClick={()=> navigate('/')}>Login</button>
+                </div>
             </div>
         </>
     )
