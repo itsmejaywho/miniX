@@ -32,14 +32,20 @@ function post(){
 
     return(
         <>
-            <div className='bg-white h-45 w-[80%]'>
-                <input 
-                    type="text"
-                    value={createPost}
-                    onChange={(e) => setCreatePost(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handlePost()}
-                />
-                <button className='w-[10%] p-2 bg-black text-white' onClick={handlePost}>save</button>
+            <div className='h-45 w-[80%] text-white flex flex-col shrink-0  gap-1 '>
+                <div className='w-full h-[80%] border border-[#2c2e2f] rounded-[15px]'>
+                    <textarea 
+                        value={createPost}
+                        onChange={(e) => setCreatePost(e.target.value)}
+                        placeholder={`Whats on your mind, ` + user.firstName + '?'}
+                        onKeyPress={(e) => e.key === 'Enter' && e.ctrlKey && handlePost()}
+                        className='w-full h-full p-2 resize-none text-[.8rem] px-4 outline-none'
+                        rows="4"
+                    />
+                </div>
+                <div className='w-full h-[20%]  flex justify-end'>
+                    <button className='w-[20%] tracking-[2px] flex items-center justify-center bg-white text-black rounded-[10px]' onClick={handlePost}>Post</button>
+                </div>
             </div>
         </>
     )
