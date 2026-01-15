@@ -29,7 +29,8 @@ function Login(){
             
             if(passwordMatch){
                 navigate('/homepage')
-                console.log(user.id)
+                localStorage.setItem('userData', JSON.stringify(user))
+                console.log(localStorage)
             } else {
                 alert('Invalid credentials')
             }
