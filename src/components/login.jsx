@@ -5,6 +5,7 @@ import Google from '../assets/google.png'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import bcrypt from 'bcryptjs'
+import '../components/cssComponents/loginCss.css'
 
 
 function Login(){
@@ -44,7 +45,7 @@ function Login(){
 
     return(
         <>
-        <div className="h-[60%] w-[30%] bg-[#181818] rounded-[15px] flex flex-col">
+        <div className="loginContainer">
             <div className="h-[40%] max-w-full flex flex-col items-center p-1">
                 <div className='h-[50%] flex items-center justify-center'>
                     <div className='h-[50%] p-1 rounded-[10px] flex items-center  justify-center bg-[#1e1d1d] outline-[#2d2d2f] outline'>

@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+.signupContainer{
+    @apply  bg-[#282825] h-[80%] w-[95%] p-4 rounded-[10px]
+}
+
+
+.signupInputField {
+    @apply h-[70%] w-full flex justify-end items-center flex-col gap-6 
+}
+
+/* bg-[#282825]  */

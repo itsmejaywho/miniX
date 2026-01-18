@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+.loginContainer {
+   @apply  h-[60%] w-[90%] bg-[#181818] rounded-[15px] flex flex-col
+   sm:w-[80%] md:w-[50%] lg:w-[40%] xl:w-[30%] 
+
+}

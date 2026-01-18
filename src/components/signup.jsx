@@ -5,7 +5,11 @@ import supabase from '../../supabaseServer/supabase.jsx'
 import { useNavigate } from 'react-router-dom'
 import Show from '../assets/show.svg'
 import NotShow from '../assets/notShow.svg'
+import Email from '../assets/email.svg'
+import Username from '../assets/inputUsername.svg'
+import Password from '../assets/password.svg'
 import bcrypt from 'bcryptjs'
+import '../components/cssComponents/signupCss.css'
 
 
 function isEmailValid(email){
@@ -134,19 +138,18 @@ function SignUp(){
 
     return(
         <>
-            <div className='bg-[#282825]  w-[70%] h-[85%] rounded-[15px] px-17 py-10 flex  items-center flex-col gap-6'>
+            <div className='signupContainer'>
                 
                     
-               <div className='h-[70%] w-full flex justify-end items-center flex-col gap-6 '>
-                     <div className='flex gap-4 w-full'>
+               <div className='signupInputField'>
+                     <div className='flex gap-6 md:gap-4 w-full flex-col md:flex-row'>
                         <Inputs source={User} message='First Name' value={Fname} onChange={handleChange(setFname, {capitalize: true})} />
                         <Inputs source={User} message='Last Name' value={Lname} onChange={handleChange(setLname, {capitalize: true})} />
                     </div>
-
-                    <Inputs message='Username' value={username} onChange={handleChange(setUsername)} />
-                    <Inputs message='Email Address' value={emailAddress} onChange={handleChange(setEmailAddress)} />
+                    <Inputs message='Username' source={Username} value={username} onChange={handleChange(setUsername)} />
+                    <Inputs message='Email Address' source={Email} value={emailAddress} onChange={handleChange(setEmailAddress)} />
                     <div className='flex w-full p-2 h-10 bg-[#3a3b36] rounded-[5px] gap-2 items-center '>
-                        <Inputs message='Password'  type={showPassword ? 'text' : 'password'}  value={password} onChange={handleChange(setPassword)} />
+                        <Inputs message='Password' source={Password} type={showPassword ? 'text' : 'password'}  value={password} onChange={handleChange(setPassword)} />
                         <button className='h-full' onClick={() => setShowPassword(prev => !prev) }> <img className='h-[90%]' src={showPassword ? NotShow : Show } alt="" /></button>
                     </div>
                     

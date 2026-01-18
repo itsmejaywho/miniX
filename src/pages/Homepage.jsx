@@ -11,33 +11,28 @@ function Homepage(){
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                // Fetch posts
                 const {data: postsData, error: postsError} = await supabase
                     .from('indivPost')
                     .select('id, post, user_id, date')
                 
                 if(postsError) throw postsError
 
-                // Fetch user info
                 const {data: usersData, error: usersError} = await supabase
                     .from('userInfo')
                     .select('id, userName')
                 
                 if(usersError) throw usersError
 
-                // Create a mapping of user_id to userName
                 const userMap = {}
                 usersData.forEach(user => {
                     userMap[user.id] = user.userName
                 })
 
-                // Merge posts with user names
                 const postsWithUserNames = postsData.map(post => ({
                     ...post,
                     userName: userMap[post.user_id] || 'Unknown User'
                 }))
 
-                // Sort by date - latest on top
                 const sortedPosts = postsWithUserNames.sort((a, b) => {
                     return new Date(b.date) - new Date(a.date)
                 })
@@ -52,10 +47,8 @@ function Homepage(){
         
         fetchPosts()
 
-        // Refresh posts every 5 seconds
         const interval = setInterval(fetchPosts, 5000)
 
-        // Subscribe to real-time changes in posts
         const postsSubscription = supabase
             .channel('indivPost-changes')
             .on(
@@ -67,7 +60,6 @@ function Homepage(){
             )
             .subscribe()
 
-        // Subscribe to real-time changes in userInfo
         const userInfoSubscription = supabase
             .channel('userInfo-changes')
             .on(
@@ -79,7 +71,6 @@ function Homepage(){
             )
             .subscribe()
 
-        // Cleanup subscriptions and interval on unmount
         return () => {
             clearInterval(interval)
             postsSubscription.unsubscribe()

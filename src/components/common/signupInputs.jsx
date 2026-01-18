@@ -1,3 +1,5 @@
+import '../cssComponents/signupCss.css'
+
 
 function signupInputs({message, type='text', source, value, onChange}){
     return(
