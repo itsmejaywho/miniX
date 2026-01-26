@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Navigation from '../components/navigation'
 import CreatePost from '../components/common/post'
 import UserPost from '../components/common/userpost'
+import PostContainer from '../components/common/postContainer'
 import supabase from '../../supabaseServer/supabase'
 import NavigationButton from '../components/common/navigationButton'
 import Notif from '../assets/notification.svg'
@@ -9,6 +10,15 @@ import Notif from '../assets/notification.svg'
 function Homepage(){
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
+    const [showCreatePost, setShowCreatePost] = useState(false)
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString)
+        const options = { month: 'short', day: 'numeric', timeZone: 'Asia/Manila' }
+        const dateFormatted = date.toLocaleDateString('en-US', options)
+        const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Manila' })
+        return `${dateFormatted}: ${time}`
+    }
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -86,7 +96,7 @@ function Homepage(){
 
                 <div className='order-last h-[10%] border-t border-gray-500'>
                 {/* FOR NAVIGATION */}
-                    <Navigation>
+                    <Navigation onCreateClick={() => setShowCreatePost(true)}>
                         
                     </Navigation>
                 </div>
@@ -98,7 +108,7 @@ function Homepage(){
                         <NavigationButton message='Notification' source={Notif}/>
                     </div>
                 </div >
-                <div className='h-[80%] overflow-auto flex flex-col gap-2 items-center'>
+                <div className='h-[80%] w-full overflow-auto gap-4 flex flex-col items-center'>
                 {/* FOR POST */}
                     {loading ? (
                         <p className='text-white text-center mt-4'>Loading posts...</p>
@@ -108,12 +118,16 @@ function Homepage(){
                                 key={post.id}
                                 user={post.userName}
                                 user_post={post.post}
+                                user_date={formatDate(post.date)}
                             />
                         ))
                     ) : (
                         <p className='text-white text-center mt-4'>No posts yet. Be the first to post!</p>
                     )}
                 </div>
+                {showCreatePost && (
+                    <PostContainer onClose={() => setShowCreatePost(false)} />
+                )}
             </div>
         </>
     )
