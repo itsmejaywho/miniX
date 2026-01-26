@@ -3,6 +3,8 @@ import Navigation from '../components/navigation'
 import CreatePost from '../components/common/post'
 import UserPost from '../components/common/userpost'
 import supabase from '../../supabaseServer/supabase'
+import NavigationButton from '../components/common/navigationButton'
+import Notif from '../assets/notification.svg'
 
 function Homepage(){
     const [posts, setPosts] = useState([])
@@ -80,22 +82,37 @@ function Homepage(){
 
     return(
         <>
-            <div className='h-screen flex bg-[#0f0f0f] p-3 overflow-auto hide-scrollbar'>
-                <Navigation />
-                <div className='w-[83%] h-full'>
-                    <div className='overflow-auto hide-scrollbar w-[70%] h-full outline-x outline-gray-700 items-center  flex flex-col'>
-                        <CreatePost></CreatePost>
-                        {loading ? (
-                            <p className='text-white'>Loading posts...</p>
-                        ) : (
-                            posts.map((post) => (
-                                <UserPost  user={post.userName} user_post={post.post} />
-                            ))
-                        )}
-                    </div>
-                    <div className='w-[30%] '>
+            <div className='flex gap-2 flex-col h-screen'>
 
+                <div className='order-last h-[10%] border-t border-gray-500'>
+                {/* FOR NAVIGATION */}
+                    <Navigation>
+                        
+                    </Navigation>
+                </div>
+                <div className='w-full h-[10%] flex'>
+                    <div className='w-[90%] flex items-center p-2 '>
+                        <p className='italic text-[1.5rem]'>MiniX</p>
                     </div>
+                    <div className='w-[10%] p-2'>
+                        <NavigationButton message='Notification' source={Notif}/>
+                    </div>
+                </div >
+                <div className='h-[80%] overflow-auto flex flex-col gap-2 items-center'>
+                {/* FOR POST */}
+                    {loading ? (
+                        <p className='text-white text-center mt-4'>Loading posts...</p>
+                    ) : posts.length > 0 ? (
+                        posts.map((post) => (
+                            <UserPost 
+                                key={post.id}
+                                user={post.userName}
+                                user_post={post.post}
+                            />
+                        ))
+                    ) : (
+                        <p className='text-white text-center mt-4'>No posts yet. Be the first to post!</p>
+                    )}
                 </div>
             </div>
         </>

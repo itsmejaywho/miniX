@@ -3,9 +3,9 @@
 function userpost({user, user_post}){
     return(
         <>
-            <div className='outline rounded-[10px] outline-[#1d1d1d] h-50 w-[80%] flex mt-4 text-white shrink-0'>
+            <div className='border border-[#36424e] w-full h-[200px] flex'>
                 <div className="w-[10%] h-full">
-
+        
                 </div>
                 <div className="w-[90%] h-full flex gap-4 flex-col">
                     <div className="w-full h-[10%] ">

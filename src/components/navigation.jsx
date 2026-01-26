@@ -7,12 +7,12 @@ import Create from '../assets/create.svg'
 function Navigation(){
     return(
         <>
-        <div className="w-[17%] h-full border-r border-gray-800 flex gap-2 flex-col">
+        <div className="flex w-full h-full">
             <NavigationButton message='Home' source={Home}/>
-            <NavigationButton message='Profile' source={Home}/>
+            {/* Matatagpuan ang settings sa Profile */}
             <NavigationButton message='Create' source={Create}/>
-            <NavigationButton message='Notification' source={Notification}/>
-            <NavigationButton message='Settings' source={Settings}/>
+            <NavigationButton message='Notification' display='hidden sm:flex' source={Notification}/>
+            <NavigationButton message='Profile' source={Home}/>
         </div>
         </>
     )

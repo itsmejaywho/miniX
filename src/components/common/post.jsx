@@ -32,8 +32,8 @@ function post(){
 
     return(
         <>
-            <div className='h-45 w-[80%] text-white flex flex-col shrink-0  gap-1 '>
-                <div className='w-full h-[80%] border border-[#2c2e2f] rounded-[15px]'>
+            <div className='h-45 bg-red-500 w-full text-white flex flex-col shrink-0  gap-1 items-center'>
+                <div className='w-[80%] h-[80%] border border-[#2c2e2f] rounded-[15px]'>
                     <textarea 
                         value={createPost}
                         onChange={(e) => setCreatePost(e.target.value)}

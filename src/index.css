@@ -1,7 +1,14 @@
 @import "tailwindcss";
 
 body {
-  @apply h-screen
+    background: linear-gradient(
+    to right,
+    #1a1a1a,
+    #0d1b2a,
+    #1b263b
+    );
+    height: 100vh;
+    color: white;
 }
 
 * {
