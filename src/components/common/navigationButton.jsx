@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-function navigationButton({message, source}){
+function navigationButton({message, source, display='flex'}){
     const navigation = useNavigate();
 
     function toWhere(location){
@@ -9,11 +9,12 @@ function navigationButton({message, source}){
 
     return(
         <>
-        <div onClick={() => toWhere('/'+message.toLowerCase())} className="w-[80%] text-white flex gap-5 h-[5%] justify-center ">
-            <div className="w-[15%] h-full flex items-center ">
-                <img src={source} className='h-full' alt="" />
+        <div onClick={() => toWhere('/'+message.toLowerCase())} 
+        className={`w-full justify-center  ${display}  h-full`}>
+            <div className="flex justify-center items-center h-full">
+                <img src={source} className='h-6' alt="" />
             </div>
-            <div className="w-[85%] h-full items-center flex tracking-[2px]">
+            <div className="hidden">
                  <button>{message}</button>
             </div>
         </div>

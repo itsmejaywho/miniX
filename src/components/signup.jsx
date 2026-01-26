@@ -154,8 +154,6 @@ function SignUp(){
                     </div>
                     
 
-
-
                     <button
                         className={`bg-white w-full text-black p-3 rounded-[10px]${isLoading ? ' opacity-60 cursor-not-allowed' : ''}`}
                         onClick={handleAddUser}
