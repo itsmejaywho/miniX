@@ -3,15 +3,21 @@ import supabase from '../../../supabaseServer/supabase'
 
 function post(){
     const [createPost, setCreatePost] = useState('')
+    const [isPosting, setIsPosting] = useState(false)
     
     const user = useMemo(() => JSON.parse(localStorage.getItem('userData')), [])
 
     const handlePost = async ()=> {
-        if(!createPost.trim()){
-            return
-        }
+        if(!createPost.trim() || isPosting) return
 
+        setIsPosting(true)
         try {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (!session) {
+                console.error('Not authenticated')
+                return
+            }
+
             const {error} = await supabase
             .from('indivPost')
             .insert({
@@ -25,6 +31,8 @@ function post(){
             setCreatePost('')
         } catch(error) {
             console.error('Error posting:', error)
+        } finally {
+            setIsPosting(false)
         }
     }
 
@@ -56,12 +64,12 @@ function post(){
             <div className='flex items-center justify-between pt-3' style={{borderTop: '1px solid var(--border-main)'}}>
                 <p className='text-xs' style={{color: 'var(--text-muted)'}}>Press Ctrl+Enter to post</p>
                 <button 
-                    className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${createPost.trim() ? 'hover:opacity-80' : 'cursor-not-allowed'}`}
-                    style={{background: createPost.trim() ? 'var(--text-primary)' : 'var(--bg-input)', color: createPost.trim() ? 'var(--bg-page)' : 'var(--text-muted)'}}
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${createPost.trim() && !isPosting ? 'hover:opacity-80' : 'cursor-not-allowed'}`}
+                    style={{background: createPost.trim() && !isPosting ? 'var(--text-primary)' : 'var(--bg-input)', color: createPost.trim() && !isPosting ? 'var(--bg-page)' : 'var(--text-muted)'}}
                     onClick={handlePost}
-                    disabled={!createPost.trim()}
+                    disabled={!createPost.trim() || isPosting}
                 >
-                    Post
+                    {isPosting ? 'Posting...' : 'Post'}
                 </button>
             </div>
         </div>

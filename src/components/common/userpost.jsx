@@ -49,6 +49,8 @@ function userpost({postId, userId, user, user_post, user_date}){
     }
 
     const confirmDelete = async () => {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) return
         const { error } = await supabase
             .from('indivPost')
             .delete()
