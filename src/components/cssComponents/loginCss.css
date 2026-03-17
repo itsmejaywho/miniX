@@ -1,7 +1,125 @@
 @import "tailwindcss";
 
-.loginContainer {
-   @apply  h-[60%] w-[90%] bg-[#181818] rounded-[15px] flex flex-col
-   sm:w-[80%] md:w-[50%] lg:w-[40%] xl:w-[30%] 
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 
+.loginCard {
+    @apply relative w-full max-w-[460px] min-h-[620px] bg-[#1c1c1e] rounded-2xl p-8 flex flex-col gap-6;
+    animation: fadeSlideIn 0.35s ease-out;
+}
+
+.loginLogoWrap {
+    @apply flex justify-center;
+}
+
+.loginLogoBg {
+    @apply p-2 rounded-xl bg-[#2a2a2e];
+}
+
+.loginLogo {
+    @apply h-8;
+}
+
+.loginTabToggle {
+    @apply flex bg-[#2a2a2e] rounded-full p-1 w-fit mx-auto;
+}
+
+.loginTabInactive {
+    @apply px-5 py-2 rounded-full text-gray-400 text-sm font-medium hover:text-white transition-colors;
+}
+
+.loginTabActive {
+    @apply px-5 py-2 rounded-full bg-[#3a3a3e] text-white text-sm font-medium;
+}
+
+.loginHeading {
+    @apply text-center;
+}
+
+.loginTitle {
+    @apply text-white text-2xl font-semibold;
+}
+
+.loginSubtitle {
+    @apply text-gray-500 text-sm mt-1;
+}
+
+.loginFields {
+    @apply flex flex-col gap-3;
+}
+
+.loginInputRow {
+    @apply flex items-center bg-[#2a2a2e] rounded-lg px-4 py-3 gap-3;
+}
+
+.loginInputIcon {
+    @apply w-4 h-4 text-gray-500 shrink-0;
+}
+
+.loginInput {
+    @apply w-full bg-transparent text-white placeholder-gray-500 text-sm outline-none;
+}
+
+.loginShowBtn {
+    @apply shrink-0;
+}
+
+.loginShowIcon {
+    @apply h-4 opacity-50 hover:opacity-80 transition-opacity;
+}
+
+.loginSubmitBtn {
+    @apply w-full py-3 rounded-lg bg-[#7c3aed] text-white font-medium text-sm tracking-wide hover:bg-[#6d28d9] transition-colors;
+}
+
+.loginSubmitBtn.loading {
+    @apply opacity-60 cursor-not-allowed;
+}
+
+.loginError {
+    @apply text-red-400 text-sm -mt-3;
+}
+
+.loginDivider {
+    @apply flex items-center gap-4;
+}
+
+.loginDividerLine {
+    @apply grow border-t border-[#2a2a2e];
+}
+
+.loginDividerText {
+    @apply text-gray-500 text-xs tracking-widest;
+}
+
+.loginSocialRow {
+    @apply flex gap-3;
+}
+
+.loginSocialBtn {
+    @apply flex-1 flex items-center justify-center gap-2 bg-[#2a2a2e] hover:bg-[#3a3a3e] rounded-lg py-3 transition-colors;
+}
+
+.loginSocialIcon {
+    @apply w-5 h-5;
+}
+
+.loginSocialIconWhite {
+    @apply w-5 h-5 text-white;
+}
+
+.loginFooter {
+    @apply text-gray-500 text-xs text-center;
+}
+
+.loginFooterLink {
+    @apply text-[#7c3aed] hover:text-[#a78bfa] transition-colors;
 }

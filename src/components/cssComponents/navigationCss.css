@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+.navSidebar {
+    @apply h-screen bg-[#1c1c1e] flex flex-col border-r border-[#2a2a2e] transition-all duration-300 ease-in-out relative;
+    @apply fixed top-0 left-0 z-50;
+}
+
+@media (min-width: 1024px) {
+    .navSidebar {
+        @apply relative z-auto;
+    }
+}
+
+.navExpanded {
+    @apply w-72;
+}
+
+.navCollapsed {
+    @apply w-20;
+}
+
+.navCollapsed .navItem {
+    @apply justify-center px-0 py-2 mx-auto w-10 h-10;
+}
+
+.navCollapsed .navHeader {
+    @apply justify-center;
+}
+
+.navCollapsed .navProfile {
+    @apply justify-center px-0;
+}
+
+.navHeader {
+    @apply flex items-center p-4 overflow-hidden;
+}
+
+.navLogoWrap {
+    @apply flex items-center gap-2 cursor-pointer;
+}
+
+.navLogoImg {
+    @apply h-8 w-8 rounded-lg flex-shrink-0;
+}
+
+.navLogoText {
+    @apply text-white font-semibold text-lg;
+}
+
+.navCollapseBtn {
+    @apply absolute top-5 -right-3 z-10 p-1 rounded-lg bg-[#2a2a2e] text-gray-400 hover:text-white hover:bg-[#3a3a3e] transition-colors shadow-lg;
+}
+
+.navCollapseIcon {
+    @apply w-4 h-4;
+}
+
+.navSearchWrap {
+    @apply flex items-center gap-2 mx-3 mb-4 px-3 py-2 bg-[#2a2a2e] rounded-lg;
+}
+
+.navSearchIcon {
+    @apply w-4 h-4 text-gray-400 flex-shrink-0;
+}
+
+.navSearchInput {
+    @apply bg-transparent text-white text-sm outline-none w-full placeholder-gray-500;
+}
+
+.navMain {
+    @apply flex flex-col gap-1 px-2 flex-1;
+}
+
+.navCollapsed .navMain {
+    @apply gap-2 px-1;
+}
+
+.navItem {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:text-white hover:bg-[#2a2a2e] transition-colors cursor-pointer w-full;
+}
+
+.navItemActive {
+    @apply text-white bg-[#2a2a2e];
+}
+
+.navIcon {
+    @apply w-5 h-5 flex-shrink-0;
+}
+
+.navLabel {
+    @apply text-sm font-medium whitespace-nowrap;
+}
+
+.navBottom {
+    @apply flex flex-col gap-1 px-2 pb-4 border-t border-[#2a2a2e] pt-3;
+}
+
+.navProfile {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#2a2a2e] transition-colors cursor-pointer;
+}
+
+.navProfileAvatar {
+    @apply w-8 h-8 rounded-full bg-[#7c3aed] flex items-center justify-center text-white text-sm font-semibold flex-shrink-0;
+}
+
+.navProfileInfo {
+    @apply overflow-hidden;
+}
+
+.navProfileName {
+    @apply text-white text-sm font-medium truncate;
+}
+
+.navProfileUsername {
+    @apply text-gray-400 text-xs truncate;
+}

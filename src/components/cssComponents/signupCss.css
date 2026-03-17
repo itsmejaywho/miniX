@@ -1,12 +1,145 @@
 @import "tailwindcss";
 
-.signupContainer{
-    @apply  bg-[#282825] h-[80%] w-[95%] p-4 rounded-[10px]
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-
-.signupInputField {
-    @apply h-[70%] w-full flex justify-end items-center flex-col gap-6 
+.signupCard {
+    @apply relative w-full max-w-[460px] min-h-[620px] bg-[#1c1c1e] rounded-2xl p-8 flex flex-col gap-6;
+    animation: fadeSlideIn 0.35s ease-out;
 }
 
-/* bg-[#282825]  */
+.signupLogoWrap {
+    @apply flex justify-center;
+}
+
+.signupLogoBg {
+    @apply p-2 rounded-xl bg-[#2a2a2e];
+}
+
+.signupLogo {
+    @apply h-8;
+}
+
+.signupTabToggle {
+    @apply flex bg-[#2a2a2e] rounded-full p-1 w-fit mx-auto;
+}
+
+.signupTabActive {
+    @apply px-5 py-2 rounded-full bg-[#3a3a3e] text-white text-sm font-medium;
+}
+
+.signupTabInactive {
+    @apply px-5 py-2 rounded-full text-gray-400 text-sm font-medium hover:text-white transition-colors;
+}
+
+.signupTitle {
+    @apply text-white text-2xl font-semibold text-center;
+}
+
+.signupFields {
+    @apply flex flex-col gap-3;
+}
+
+.signupNameRow {
+    @apply flex gap-3;
+}
+
+.signupNameInput {
+    @apply w-1/2 bg-[#2a2a2e] text-white placeholder-gray-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-[#7c3aed] transition-all;
+}
+
+.signupFullInput {
+    @apply w-full bg-[#2a2a2e] text-white placeholder-gray-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-[#7c3aed] transition-all;
+}
+
+.signupInputRow {
+    @apply flex items-center bg-[#2a2a2e] rounded-lg px-4 py-3 gap-3;
+}
+
+.signupInputIcon {
+    @apply w-4 h-4 text-gray-500 shrink-0;
+}
+
+.signupInput {
+    @apply w-full bg-transparent text-white placeholder-gray-500 text-sm outline-none;
+}
+
+.signupShowBtn {
+    @apply shrink-0;
+}
+
+.signupShowIcon {
+    @apply h-4 opacity-50 hover:opacity-80 transition-opacity;
+}
+
+.signupMatchText {
+    @apply text-xs;
+}
+
+.signupMatchValid {
+    @apply text-green-400;
+}
+
+.signupMatchInvalid {
+    @apply text-red-400;
+}
+
+.signupSubmitBtn {
+    @apply w-full py-3 rounded-lg bg-[#7c3aed] text-white font-medium text-sm tracking-wide hover:bg-[#6d28d9] transition-colors;
+}
+
+.signupSubmitBtn.loading {
+    @apply opacity-60 cursor-not-allowed;
+}
+
+.signupError {
+    @apply text-red-400 text-sm -mt-3;
+}
+
+.signupSuccess {
+    @apply text-green-400 text-sm -mt-3;
+}
+
+.signupDivider {
+    @apply flex items-center gap-4;
+}
+
+.signupDividerLine {
+    @apply grow border-t border-[#2a2a2e];
+}
+
+.signupDividerText {
+    @apply text-gray-500 text-xs tracking-widest;
+}
+
+.signupSocialRow {
+    @apply flex gap-3;
+}
+
+.signupSocialBtn {
+    @apply flex-1 flex items-center justify-center gap-2 bg-[#2a2a2e] hover:bg-[#3a3a3e] rounded-lg py-3 transition-colors;
+}
+
+.signupSocialIcon {
+    @apply w-5 h-5;
+}
+
+.signupSocialIconWhite {
+    @apply w-5 h-5 text-white;
+}
+
+.signupFooter {
+    @apply text-gray-500 text-xs text-center;
+}
+
+.signupFooterLink {
+    @apply text-[#7c3aed] hover:text-[#a78bfa] transition-colors;
+}

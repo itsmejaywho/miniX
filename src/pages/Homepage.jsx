@@ -3,9 +3,8 @@ import Navigation from '../components/navigation'
 import CreatePost from '../components/common/post'
 import UserPost from '../components/common/userpost'
 import PostContainer from '../components/common/postContainer'
+import RightPanel from '../components/common/rightPanel'
 import supabase from '../../supabaseServer/supabase'
-import NavigationButton from '../components/common/navigationButton'
-import Notif from '../assets/notification.svg'
 
 function Homepage(){
     const [posts, setPosts] = useState([])
@@ -91,31 +90,20 @@ function Homepage(){
     }, [])
 
     return(
-        <>
-            <div className='flex gap-2 flex-col h-screen'>
+        <div className='flex h-screen bg-[#0a0a0a]'>
+            {/* Sidebar */}
+            <Navigation onCreateClick={() => setShowCreatePost(true)} />
 
-                <div className='order-last h-[10%] border-t border-gray-500'>
-                {/* FOR NAVIGATION */}
-                    <Navigation onCreateClick={() => setShowCreatePost(true)}>
-                        
-                    </Navigation>
-                </div>
-                <div className='w-full h-[10%] flex'>
-                    <div className='w-[90%] flex items-center p-2 '>
-                        <p className='italic text-[1.5rem]'>MiniX</p>
-                    </div>
-                    <div className='w-[10%] p-2'>
-                        <NavigationButton message='Notification' source={Notif}/>
-                    </div>
-                </div >
-                <div className='h-[80%] w-full overflow-auto gap-4 flex flex-col items-center'>
-                {/* FOR POST */}
+            {/* Main content - center feed */}
+            <div className='flex-1 flex flex-col overflow-hidden relative ml-20 lg:ml-0'>
+                <div className='flex-1 overflow-auto p-4 flex flex-col items-center gap-4'>
                     {loading ? (
                         <p className='text-white text-center mt-4'>Loading posts...</p>
                     ) : posts.length > 0 ? (
                         posts.map((post) => (
                             <UserPost 
                                 key={post.id}
+                                postId={post.id}
                                 user={post.userName}
                                 user_post={post.post}
                                 user_date={formatDate(post.date)}
@@ -125,11 +113,15 @@ function Homepage(){
                         <p className='text-white text-center mt-4'>No posts yet. Be the first to post!</p>
                     )}
                 </div>
+
                 {showCreatePost && (
                     <PostContainer onClose={() => setShowCreatePost(false)} />
                 )}
             </div>
-        </>
+
+            {/* Right panel */}
+            <RightPanel />
+        </div>
     )
 }
 
