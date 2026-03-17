@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react'
-import Navigation from '../components/navigation'
-import CreatePost from '../components/common/post'
 import UserPost from '../components/common/userpost'
-import PostContainer from '../components/common/postContainer'
 import RightPanel from '../components/common/rightPanel'
 import supabase from '../../supabaseServer/supabase'
 
 function Homepage(){
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
-    const [showCreatePost, setShowCreatePost] = useState(false)
-
     const formatDate = (dateString) => {
         const date = new Date(dateString)
         const options = { month: 'short', day: 'numeric', timeZone: 'Asia/Manila' }
@@ -90,10 +85,7 @@ function Homepage(){
     }, [])
 
     return(
-        <div className='flex h-screen' style={{background: 'var(--bg-page)'}}>
-            {/* Sidebar */}
-            <Navigation onCreateClick={() => setShowCreatePost(true)} isCreateActive={showCreatePost} onCloseCreate={() => setShowCreatePost(false)} />
-
+        <>
             {/* Main content - center feed */}
             <div className='flex-1 flex flex-col overflow-hidden relative'>
                 <div className='flex-1 overflow-auto p-4 pb-24 lg:pb-4 flex flex-col items-center gap-4'>
@@ -113,15 +105,11 @@ function Homepage(){
                         <p className='text-center mt-4' style={{color: 'var(--text-secondary)'}}>No posts yet. Be the first to post!</p>
                     )}
                 </div>
-
-                {showCreatePost && (
-                    <PostContainer onClose={() => setShowCreatePost(false)} />
-                )}
             </div>
 
             {/* Right panel */}
             <RightPanel />
-        </div>
+        </>
     )
 }
 

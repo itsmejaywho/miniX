@@ -1,5 +1,4 @@
 
-import Navigation from '../components/navigation'
 import { useTheme } from '../context/ThemeContext'
 
 function Settings(){
@@ -10,11 +9,9 @@ function Settings(){
     }
 
     return(
-        <div className='flex h-screen' style={{background: 'var(--bg-page)'}}>
-            <Navigation />
-            <div className='flex-1 flex flex-col overflow-hidden'>
-                <div className='flex-1 overflow-auto p-8 pb-24 lg:pb-8'>
-                    <h1 className='text-2xl font-bold mb-8' style={{color: 'var(--text-primary)'}}>Settings</h1>
+        <div className='flex-1 flex flex-col overflow-hidden'>
+            <div className='flex-1 overflow-auto p-8 pb-24 lg:pb-8'>
+                <h1 className='text-2xl font-bold mb-8' style={{color: 'var(--text-primary)'}}>Settings</h1>
 
                     <div className='max-w-xl flex flex-col gap-4'>
                         {/* Theme Selection */}
@@ -91,7 +88,6 @@ function Settings(){
                     </div>
                 </div>
             </div>
-        </div>
     )
 }
 
