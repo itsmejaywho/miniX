@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Logo from '../assets/miniLogo.png'
+import supabase from '../../supabaseServer/supabase'
 import '../components/cssComponents/navigationCss.css'
 
 function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
     const [collapsed, setCollapsed] = useState(window.innerWidth < 1024)
+    const [showProfileMenu, setShowProfileMenu] = useState(false)
+    const profileMenuRef = useRef(null)
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -15,6 +18,16 @@ function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+                setShowProfileMenu(false)
+            }
+        }
+        if (showProfileMenu) document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [showProfileMenu])
 
     const user = JSON.parse(localStorage.getItem('userData') || '{}')
 
@@ -34,6 +47,15 @@ function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
             icon: (
                 <svg className='navIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M12 4v16m8-8H4' />
+                </svg>
+            )
+        },
+        {
+            label: 'Messages',
+            path: '/messages',
+            icon: (
+                <svg className='navIcon' fill='currentColor' viewBox='0 0 24 24'>
+                    <path d='M2 15.5V5.5C2 4.12 3.12 3 4.5 3H19.5C20.88 3 22 4.12 22 5.5V15.5C22 16.88 20.88 18 19.5 18H13.12L8.56 21.42C8.24 21.66 7.83 21.75 7.44 21.75C6.65 21.75 6 21.1 6 20.31V18H4.5C3.12 18 2 16.88 2 15.5Z' />
                 </svg>
             )
         },
@@ -72,7 +94,18 @@ function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
         }
     }
 
+    const handleLogout = async () => {
+        await supabase.auth.signOut()
+        localStorage.removeItem('userData')
+        navigate('/')
+    }
+
     const allItems = [...navItems, ...bottomItems]
+
+    // Mobile bottom nav excludes Notifications (moved to top bar)
+    const mobileItems = allItems.filter(item => item.label !== 'Notifications')
+
+    const notificationItem = navItems.find(item => item.label === 'Notifications')
 
     const isItemActive = (item) => {
         if (item.label === 'Create' && isCreateActive) return true
@@ -82,9 +115,26 @@ function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
 
     return (
         <>
+            {/* Mobile top bar */}
+            <div className='mobileTopBar'>
+                <button className='mobileTopBtn' onClick={() => navigate('/settings')}>
+                    <div className='mobileProfileAvatar'>
+                        {user.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                </button>
+                {notificationItem && (
+                    <button
+                        className={`mobileTopBtn ${isItemActive(notificationItem) ? 'mobileTopBtnActive' : ''}`}
+                        onClick={() => handleClick(notificationItem)}
+                    >
+                        {notificationItem.icon}
+                    </button>
+                )}
+            </div>
+
             {/* Mobile bottom bubble nav */}
             <div className='mobileBottomNav'>
-                {allItems.map((item) => (
+                {mobileItems.map((item) => (
                     <button
                         key={item.label}
                         className={`mobileNavBtn ${isItemActive(item) ? 'mobileNavBtnActive' : ''}`}
@@ -157,14 +207,45 @@ function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
                     ))}
 
                     {/* User profile */}
-                    <div className='navProfile'>
-                        <div className='navProfileAvatar'>
-                            {user.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
+                    <div className='relative' ref={profileMenuRef}>
+                        <div className='navProfile' onClick={() => setShowProfileMenu(prev => !prev)}>
+                            <div className='navProfileAvatar'>
+                                {user.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                            {!collapsed && (
+                                <div className='navProfileInfo'>
+                                    <p className='navProfileName'>{user.firstName || 'User'} {user.lastName || ''}</p>
+                                    <p className='navProfileUsername'>@{user.userName || 'username'}</p>
+                                </div>
+                            )}
                         </div>
-                        {!collapsed && (
-                            <div className='navProfileInfo'>
-                                <p className='navProfileName'>{user.firstName || 'User'} {user.lastName || ''}</p>
-                                <p className='navProfileUsername'>@{user.userName || 'username'}</p>
+
+                        {showProfileMenu && (
+                            <div className='absolute bottom-full mb-2 left-0 right-0 rounded-xl py-1 shadow-lg z-50'
+                                style={{background: 'var(--bg-card)', border: '1px solid var(--border-main)'}}>
+                                <button
+                                    className='w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer'
+                                    style={{color: 'var(--text-primary)'}}
+                                    onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                                    onClick={() => { setShowProfileMenu(false); navigate('/profile') }}
+                                >
+                                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' />
+                                    </svg>
+                                    Profile
+                                </button>
+                                <button
+                                    className='w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors cursor-pointer text-red-400'
+                                    onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                                    onClick={handleLogout}
+                                >
+                                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1' />
+                                    </svg>
+                                    Logout
+                                </button>
                             </div>
                         )}
                     </div>

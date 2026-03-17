@@ -88,7 +88,7 @@ function Homepage(){
         <>
             {/* Main content - center feed */}
             <div className='flex-1 flex flex-col overflow-hidden relative'>
-                <div className='flex-1 overflow-auto p-4 pb-24 lg:pb-4 flex flex-col items-center gap-4'>
+                <div className='flex-1 overflow-auto p-4 pt-16 lg:pt-4 pb-24 lg:pb-4 flex flex-col items-center gap-4'>
                     {loading ? (
                         <p className='text-center mt-4' style={{color: 'var(--text-secondary)'}}>Loading posts...</p>
                     ) : posts.length > 0 ? (
@@ -96,6 +96,7 @@ function Homepage(){
                             <UserPost 
                                 key={post.id}
                                 postId={post.id}
+                                userId={post.user_id}
                                 user={post.userName}
                                 user_post={post.post}
                                 user_date={formatDate(post.date)}

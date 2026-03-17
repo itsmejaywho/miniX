@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+/* ===== Mobile Top Bar ===== */
+.mobileTopBar {
+    @apply fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3;
+    background: var(--bg-page);
+}
+
+@media (min-width: 1024px) {
+    .mobileTopBar {
+        @apply hidden;
+    }
+}
+
+.mobileTopBtn {
+    @apply flex items-center justify-center w-9 h-9 rounded-full cursor-pointer transition-colors;
+    color: var(--text-secondary);
+}
+
+.mobileTopBtn:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+}
+
+.mobileTopBtnActive {
+    color: var(--text-primary);
+}
+
+.mobileProfileAvatar {
+    @apply w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold;
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border-main);
+}
+
+.mobileTopBtn .navIcon {
+    @apply w-5 h-5;
+}
+
 /* ===== Mobile Bottom Bubble Nav ===== */
 .mobileBottomNav {
     @apply fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-full;
