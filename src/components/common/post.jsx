@@ -32,12 +32,12 @@ function post(){
         <div className='flex flex-col gap-4'>
             {/* Header */}
             <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 rounded-full bg-[#7c3aed] flex items-center justify-center text-white font-semibold text-sm flex-shrink-0'>
+                <div className='w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0' style={{background: 'var(--bg-hover)', color: 'var(--text-primary)'}}>
                     {user?.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div>
-                    <p className='text-white text-sm font-medium'>{user?.firstName} {user?.lastName}</p>
-                    <p className='text-gray-400 text-xs'>@{user?.userName}</p>
+                    <p className='text-sm font-medium' style={{color: 'var(--text-primary)'}}>{user?.firstName} {user?.lastName}</p>
+                    <p className='text-xs' style={{color: 'var(--text-secondary)'}}>@{user?.userName}</p>
                 </div>
             </div>
 
@@ -47,15 +47,17 @@ function post(){
                 onChange={(e) => setCreatePost(e.target.value)}
                 placeholder={`What's on your mind, ${user?.firstName || 'User'}?`}
                 onKeyDown={(e) => e.key === 'Enter' && e.ctrlKey && handlePost()}
-                className='w-full bg-transparent text-white text-sm outline-none resize-none placeholder-gray-500 min-h-[100px]'
+                className='w-full bg-transparent text-sm outline-none resize-none min-h-[100px]'
+                style={{color: 'var(--text-primary)', '--tw-placeholder-opacity': 1}}
                 rows="4"
             />
 
             {/* Footer */}
-            <div className='flex items-center justify-between border-t border-[#2a2a2e] pt-3'>
-                <p className='text-gray-500 text-xs'>Press Ctrl+Enter to post</p>
+            <div className='flex items-center justify-between pt-3' style={{borderTop: '1px solid var(--border-main)'}}>
+                <p className='text-xs' style={{color: 'var(--text-muted)'}}>Press Ctrl+Enter to post</p>
                 <button 
-                    className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${createPost.trim() ? 'bg-[#7c3aed] text-white hover:bg-[#6d28d9]' : 'bg-[#2a2a2e] text-gray-500 cursor-not-allowed'}`}
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${createPost.trim() ? 'hover:opacity-80' : 'cursor-not-allowed'}`}
+                    style={{background: createPost.trim() ? 'var(--text-primary)' : 'var(--bg-input)', color: createPost.trim() ? 'var(--bg-page)' : 'var(--text-muted)'}}
                     onClick={handlePost}
                     disabled={!createPost.trim()}
                 >

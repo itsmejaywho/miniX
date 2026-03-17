@@ -42,23 +42,23 @@ function userpost({postId, user, user_post, user_date}){
     }
 
     return(
-        <div className='w-full max-w-220 min-h-50 bg-[#1c1c1e] rounded-2xl border-l-4 border-[#7c3aed] p-6 flex flex-col gap-4'>
+        <div className='w-full max-w-220 min-h-50 rounded-2xl p-6 flex flex-col gap-4' style={{background: 'var(--bg-card)', border: '1px solid var(--border-main)', boxShadow: 'var(--shadow-card)'}}>
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                    <div className='w-12 h-12 rounded-full bg-[#7c3aed] flex items-center justify-center text-white text-base font-semibold flex-shrink-0'>
+                    <div className='w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold flex-shrink-0' style={{background: 'var(--bg-hover)', color: 'var(--text-primary)'}}>
                         {user ? user.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <div>
-                        <p className='text-white font-semibold text-base'>@{user}</p>
-                        <p className='text-gray-500 text-xs'>{user_date}</p>
+                        <p className='font-semibold text-base' style={{color: 'var(--text-primary)'}}>@{user}</p>
+                        <p className='text-xs' style={{color: 'var(--text-muted)'}}>{user_date}</p>
                     </div>
                 </div>
             </div>
-            <p className='text-gray-200 text-sm leading-relaxed flex-1'>
+            <p className='text-sm leading-relaxed flex-1' style={{color: 'var(--text-body)'}}>
                 {user_post}
             </p>
             {/* Actions */}
-            <div className='flex items-center gap-8 pt-2 border-t border-[#2a2a2e]'>
+            <div className='flex items-center gap-8 pt-2' style={{borderTop: '1px solid var(--border-main)'}}>
                 <button className={`flex items-center gap-2 transition-colors ${liked ? 'text-red-400' : 'text-gray-500 hover:text-red-400'}`} onClick={handleLike}>
                     <svg className='w-5 h-5' fill={liked ? 'currentColor' : 'none'} stroke='currentColor' viewBox='0 0 24 24'>
                         <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'/>

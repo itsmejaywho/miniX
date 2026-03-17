@@ -12,32 +12,30 @@
 }
 
 .loginCard {
-    @apply relative w-full max-w-[460px] min-h-[620px] bg-[#1c1c1e] rounded-2xl p-8 flex flex-col gap-6;
+    @apply relative w-full max-w-[460px] min-h-[620px] rounded-2xl p-8 flex flex-col gap-6;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-card);
     animation: fadeSlideIn 0.35s ease-out;
 }
 
-.loginLogoWrap {
-    @apply flex justify-center;
-}
-
-.loginLogoBg {
-    @apply p-2 rounded-xl bg-[#2a2a2e];
-}
-
-.loginLogo {
-    @apply h-8;
-}
-
 .loginTabToggle {
-    @apply flex bg-[#2a2a2e] rounded-full p-1 w-fit mx-auto;
+    @apply flex rounded-full p-1 w-fit mx-auto;
+    background: var(--bg-input);
 }
 
 .loginTabInactive {
-    @apply px-5 py-2 rounded-full text-gray-400 text-sm font-medium hover:text-white transition-colors;
+    @apply px-5 py-2 rounded-full text-sm font-medium transition-colors;
+    color: var(--text-muted);
+}
+
+.loginTabInactive:hover {
+    color: var(--text-primary);
 }
 
 .loginTabActive {
-    @apply px-5 py-2 rounded-full bg-[#3a3a3e] text-white text-sm font-medium;
+    @apply px-5 py-2 rounded-full text-sm font-medium shadow-sm;
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .loginHeading {
@@ -45,7 +43,8 @@
 }
 
 .loginTitle {
-    @apply text-white text-2xl font-semibold;
+    @apply text-2xl font-semibold;
+    color: var(--text-primary);
 }
 
 .loginSubtitle {
@@ -57,7 +56,8 @@
 }
 
 .loginInputRow {
-    @apply flex items-center bg-[#2a2a2e] rounded-lg px-4 py-3 gap-3;
+    @apply flex items-center rounded-lg px-4 py-3 gap-3;
+    background: var(--bg-input);
 }
 
 .loginInputIcon {
@@ -65,7 +65,12 @@
 }
 
 .loginInput {
-    @apply w-full bg-transparent text-white placeholder-gray-500 text-sm outline-none;
+    @apply w-full bg-transparent text-sm outline-none;
+    color: var(--text-primary);
+}
+
+.loginInput::placeholder {
+    color: var(--text-muted);
 }
 
 .loginShowBtn {
@@ -77,7 +82,13 @@
 }
 
 .loginSubmitBtn {
-    @apply w-full py-3 rounded-lg bg-[#7c3aed] text-white font-medium text-sm tracking-wide hover:bg-[#6d28d9] transition-colors;
+    @apply w-full py-3 rounded-lg font-medium text-sm tracking-wide transition-colors;
+    background: var(--text-primary);
+    color: var(--bg-page);
+}
+
+.loginSubmitBtn:hover {
+    opacity: 0.85;
 }
 
 .loginSubmitBtn.loading {
@@ -93,7 +104,8 @@
 }
 
 .loginDividerLine {
-    @apply grow border-t border-[#2a2a2e];
+    @apply grow;
+    border-top: 1px solid var(--border-main);
 }
 
 .loginDividerText {
@@ -105,7 +117,12 @@
 }
 
 .loginSocialBtn {
-    @apply flex-1 flex items-center justify-center gap-2 bg-[#2a2a2e] hover:bg-[#3a3a3e] rounded-lg py-3 transition-colors;
+    @apply flex-1 flex items-center justify-center gap-2 rounded-lg py-3 transition-colors;
+    background: var(--bg-input);
+}
+
+.loginSocialBtn:hover {
+    background: var(--bg-hover);
 }
 
 .loginSocialIcon {
@@ -113,13 +130,6 @@
 }
 
 .loginSocialIconWhite {
-    @apply w-5 h-5 text-white;
-}
-
-.loginFooter {
-    @apply text-gray-500 text-xs text-center;
-}
-
-.loginFooterLink {
-    @apply text-[#7c3aed] hover:text-[#a78bfa] transition-colors;
+    @apply w-5 h-5;
+    color: var(--text-body);
 }

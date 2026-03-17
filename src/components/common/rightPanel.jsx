@@ -65,15 +65,16 @@ function RightPanel() {
         fetchWeather()
     }, [])
 
-    // CoinGecko API (no key needed)
+    // CoinLore API (CORS-friendly, no key needed)
     useEffect(() => {
         const fetchCrypto = async () => {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false')
-                const data = await res.json()
-                if (Array.isArray(data)) setCrypto(data)
+                const res = await fetch('https://api.coinlore.net/api/tickers/?start=0&limit=5')
+                if (!res.ok) throw new Error(`HTTP ${res.status}`)
+                const json = await res.json()
+                if (json.data) setCrypto(json.data)
             } catch (e) {
-                console.error('CoinGecko API error:', e)
+                console.error('CoinLore API error:', e)
             } finally {
                 setCryptoLoading(false)
             }
@@ -82,99 +83,94 @@ function RightPanel() {
     }, [])
 
     return (
-        <div className='hidden lg:flex w-80 border-l border-[#2a2a2e] flex-col p-4 overflow-auto gap-6'>
+        <div className='hidden lg:flex w-80 flex-col p-4 overflow-y-auto overflow-x-hidden gap-6' style={{background: 'var(--bg-card)', borderLeft: '1px solid var(--border-main)'}}>
 
             {/* Weather Widget */}
-            <div className='rounded-2xl p-5 bg-gradient-to-br from-[#1e1b4b] via-[#312e81] to-[#4338ca]'>
+            <div className='rounded-2xl p-5' style={{background: 'var(--bg-card)', border: '1px solid var(--border-light)'}}>
                 {weatherLoading ? (
-                    <p className='text-indigo-200 text-xs'>Loading weather...</p>
+                    <p className='text-xs' style={{color: 'var(--text-muted)'}}>Loading weather...</p>
                 ) : weather ? (
-                    <div className='flex flex-col gap-3'>
-                        {/* Date & Day */}
-                        <div className='flex items-start justify-between'>
-                            <div>
-                                <p className='text-indigo-200 text-[10px] font-semibold tracking-widest uppercase'>
-                                    {new Date().toLocaleDateString('en-US', { weekday: 'long' })}
-                                </p>
-                                <p className='text-indigo-300 text-[10px]'>
-                                    {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
-                                </p>
-                            </div>
-                            <span className='text-3xl'>{weatherIcons[weather.weather_code] || '🌡️'}</span>
-                        </div>
-                        {/* Temp & Condition */}
-                        <div className='flex items-end justify-between'>
-                            <div>
-                                <p className='text-white text-4xl font-bold leading-none'>{Math.round(weather.temperature_2m)}°C</p>
-                                <p className='text-indigo-200 text-[10px] mt-1'>
-                                    {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                                </p>
-                                <p className='text-indigo-300 text-[10px]'>
-                                    WIND SPEED · {weather.wind_speed_10m} KM/H
-                                </p>
-                            </div>
-                            <p className='text-indigo-200 text-[10px] font-semibold uppercase'>
-                                {weatherDescriptions[weather.weather_code] || 'Unknown'}
+                    <div className='flex flex-col'>
+                        {/* Top row: Temp + Condition text */}
+                        <div className='flex items-start justify-between mb-4'>
+                            <p className='text-4xl font-light' style={{color: 'var(--text-primary)'}}>{Math.round(weather.temperature_2m)}°</p>
+                            <p className='text-xs text-right max-w-[55%] leading-relaxed' style={{color: 'var(--text-secondary)'}}>
+                                {weatherDescriptions[weather.weather_code] || 'Unknown'} in <span className='font-semibold' style={{color: 'var(--text-primary)'}}>{weather.cityName}</span>
                             </p>
+                        </div>
+                        {/* Center icon */}
+                        <div className='flex justify-center my-4'>
+                            <span className='text-6xl'>{weatherIcons[weather.weather_code] || '🌡️'}</span>
                         </div>
                         {/* Hourly forecast */}
                         {hourly.length > 0 && (
-                            <div className='bg-white/10 rounded-xl p-3 flex justify-between mt-1'>
-                                {hourly.map((h, i) => (
+                            <div className='flex justify-between mt-4 pt-4' style={{borderTop: '1px solid var(--border-main)'}}>
+                                {hourly.slice(0, 4).map((h, i) => (
                                     <div key={i} className='flex flex-col items-center gap-1'>
-                                        <span className='text-indigo-200 text-[9px]'>
-                                            {new Date(h.time).toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })}
+                                        <span className='text-[10px]' style={{color: 'var(--text-muted)'}}>
+                                            {new Date(h.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
                                         </span>
-                                        <span className='text-sm'>{weatherIcons[h.code] || '🌡️'}</span>
-                                        <span className='text-white text-[10px] font-medium'>{Math.round(h.temp)}°</span>
+                                        <span className='text-sm font-medium' style={{color: 'var(--text-primary)'}}>{Math.round(h.temp)}°</span>
                                     </div>
                                 ))}
                             </div>
                         )}
-                        {/* Location */}
-                        <p className='text-indigo-300 text-[10px] font-semibold uppercase tracking-wide'>{weather.cityName}</p>
                     </div>
                 ) : (
-                    <p className='text-indigo-300 text-xs'>Unable to load weather.</p>
+                    <p className='text-xs' style={{color: 'var(--text-muted)'}}>Unable to load weather.</p>
                 )}
             </div>
 
             {/* Crypto Prices */}
-            <div className='bg-[#1c1c1e] rounded-xl p-4'>
-                <h3 className='text-white font-semibold text-sm mb-3 flex items-center gap-2'>
-                    <svg className='w-4 h-4 text-green-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <div className='min-w-0'>
+                <h3 className='font-semibold text-sm mb-3 flex items-center gap-2' style={{color: 'var(--text-primary)'}}>
+                    <svg className='w-4 h-4 text-green-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                         <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'/>
                     </svg>
                     Crypto
                 </h3>
                 {cryptoLoading ? (
-                    <p className='text-gray-500 text-xs'>Loading...</p>
+                    <p className='text-xs' style={{color: 'var(--text-muted)'}}>Loading...</p>
                 ) : crypto.length > 0 ? (
-                    <div className='flex flex-col gap-2'>
-                        {crypto.map(coin => (
-                            <div key={coin.id} className='flex items-center justify-between'>
-                                <div className='flex items-center gap-2'>
-                                    <img src={coin.image} alt={coin.name} className='w-5 h-5 rounded-full' />
-                                    <span className='text-white text-xs font-medium'>{coin.symbol.toUpperCase()}</span>
+                    <div className='flex gap-3 overflow-x-auto pb-2 min-w-0 crypto-scroll' style={{scrollSnapType: 'x mandatory'}}>
+                        {crypto.map(coin => {
+                            const change = parseFloat(coin.percent_change_24h)
+                            const isPositive = change >= 0
+                            const price = parseFloat(coin.price_usd)
+                            return (
+                                <div key={coin.id} className='flex-shrink-0 w-52 rounded-xl p-4 flex flex-col gap-3' style={{background: 'var(--bg-input)', border: '1px solid var(--border-main)', scrollSnapAlign: 'start'}}>
+                                    {/* Header: symbol + name */}
+                                    <div className='flex items-center gap-2'>
+                                        <div className='w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold' style={{background: 'var(--bg-hover)', color: 'var(--text-primary)'}}>
+                                            {coin.symbol.slice(0, 2)}
+                                        </div>
+                                        <div>
+                                            <p className='text-xs font-semibold' style={{color: 'var(--text-primary)'}}>{coin.name}</p>
+                                            <p className='text-[10px]' style={{color: 'var(--text-muted)'}}>{coin.symbol}</p>
+                                        </div>
+                                    </div>
+                                    {/* Price */}
+                                    <p className='text-lg font-bold' style={{color: 'var(--text-primary)'}}>${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
+                                    {/* Change */}
+                                    <div className='flex items-center gap-1'>
+                                        <span className={`text-xs font-medium ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                                            {isPositive ? '+' : ''}{change.toFixed(2)}%
+                                        </span>
+                                        <span className='text-[10px]' style={{color: 'var(--text-muted)'}}>24h</span>
+                                    </div>
                                 </div>
-                                <div className='text-right'>
-                                    <p className='text-white text-xs'>${coin.current_price.toLocaleString()}</p>
-                                    <p className={`text-xs ${coin.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                        {coin.price_change_percentage_24h >= 0 ? '+' : ''}{coin.price_change_percentage_24h?.toFixed(2)}%
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 ) : (
-                    <p className='text-gray-500 text-xs'>Unable to load crypto data.</p>
+                    <p className='text-xs' style={{color: 'var(--text-muted)'}}>Unable to load crypto data.</p>
                 )}
             </div>
 
             {/* Calendar */}
-            <div className='bg-[#1c1c1e] rounded-xl p-4'>
-                <h3 className='text-white font-semibold text-sm mb-3 flex items-center gap-2'>
-                    <svg className='w-4 h-4 text-blue-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <div className='rounded-xl p-4' style={{background: 'var(--bg-card)', boxShadow: 'var(--shadow-card)', border: '1px solid var(--border-light)'}}>
+                <h3 className='font-semibold text-sm mb-3 flex items-center gap-2' style={{color: 'var(--text-primary)'}}>
+                    <svg className='w-4 h-4' style={{color: 'var(--text-secondary)'}} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                         <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'/>
                     </svg>
                     Calendar
@@ -184,39 +180,54 @@ function RightPanel() {
                     const month = calendarDate.getMonth()
                     const today = new Date()
                     const firstDay = new Date(year, month, 1).getDay()
+                    // Shift so Monday=0, Sunday=6
+                    const startOffset = firstDay === 0 ? 6 : firstDay - 1
                     const daysInMonth = new Date(year, month + 1, 0).getDate()
+                    const daysInPrevMonth = new Date(year, month, 0).getDate()
                     const days = []
-                    for (let i = 0; i < firstDay; i++) days.push(null)
-                    for (let d = 1; d <= daysInMonth; d++) days.push(d)
+                    // Previous month trailing days
+                    for (let i = startOffset - 1; i >= 0; i--) days.push({ day: daysInPrevMonth - i, current: false })
+                    // Current month
+                    for (let d = 1; d <= daysInMonth; d++) days.push({ day: d, current: true })
+                    // Next month leading days
+                    const remaining = 7 - (days.length % 7)
+                    if (remaining < 7) for (let d = 1; d <= remaining; d++) days.push({ day: d, current: false })
+                    const isToday = (d) => d.current && d.day === today.getDate() && month === today.getMonth() && year === today.getFullYear()
                     return (
                         <div>
-                            <div className='flex items-center justify-between mb-3'>
-                                <button onClick={() => setCalendarDate(new Date(year, month - 1, 1))} className='text-gray-400 hover:text-white p-1'>
+                            <div className='flex items-center justify-between mb-4'>
+                                <button onClick={() => setCalendarDate(new Date(year, month - 1, 1))} className='p-1' style={{color: 'var(--text-muted)'}}>
                                     <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M15 19l-7-7 7-7'/></svg>
                                 </button>
-                                <span className='text-white text-xs font-medium'>
+                                <span className='text-sm font-medium' style={{color: 'var(--text-primary)'}}>
                                     {calendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                                 </span>
-                                <button onClick={() => setCalendarDate(new Date(year, month + 1, 1))} className='text-gray-400 hover:text-white p-1'>
+                                <button onClick={() => setCalendarDate(new Date(year, month + 1, 1))} className='p-1' style={{color: 'var(--text-muted)'}}>
                                     <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 5l7 7-7 7'/></svg>
                                 </button>
                             </div>
-                            <div className='grid grid-cols-7 gap-1 text-center'>
-                                {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => (
-                                    <span key={d} className='text-gray-500 text-[10px] font-medium'>{d}</span>
+                            <div className='grid grid-cols-7 gap-y-2 text-center'>
+                                {['Mo','Tu','We','Th','Fr','Sa','Su'].map(d => (
+                                    <span key={d} className='text-[10px] font-medium pb-2' style={{color: 'var(--text-muted)'}}>{d}</span>
                                 ))}
                                 {days.map((d, i) => (
-                                    <span
-                                        key={i}
-                                        className={`text-[11px] py-1 rounded-md ${
-                                            d === null ? '' :
-                                            d === today.getDate() && month === today.getMonth() && year === today.getFullYear()
-                                                ? 'bg-[#7c3aed] text-white font-semibold'
-                                                : 'text-gray-300 hover:bg-[#2a2a2e] cursor-pointer'
-                                        }`}
-                                    >
-                                        {d || ''}
-                                    </span>
+                                    <div key={i} className='flex items-center justify-center'>
+                                        <span
+                                            className={`w-7 h-7 flex items-center justify-center rounded-full text-xs ${
+                                                isToday(d)
+                                                    ? 'font-semibold'
+                                                    : d.current ? 'cursor-pointer' : ''
+                                            }`}
+                                            style={isToday(d)
+                                                ? { background: 'var(--text-primary)', color: 'var(--bg-card)' }
+                                                : { color: d.current ? 'var(--text-body)' : 'var(--text-muted)' }
+                                            }
+                                            onMouseEnter={!isToday(d) && d.current ? (e) => { e.target.style.background = 'var(--bg-hover)' } : undefined}
+                                            onMouseLeave={!isToday(d) && d.current ? (e) => { e.target.style.background = 'transparent' } : undefined}
+                                        >
+                                            {d.day}
+                                        </span>
+                                    </div>
                                 ))}
                             </div>
                         </div>

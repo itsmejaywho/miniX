@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Logo from '../assets/miniLogo.png'
 import '../components/cssComponents/navigationCss.css'
 
-function Navigation({ onCreateClick }) {
+function Navigation({ onCreateClick, isCreateActive, onCloseCreate }) {
     const [collapsed, setCollapsed] = useState(window.innerWidth < 1024)
     const navigate = useNavigate()
     const location = useLocation()
@@ -67,83 +67,110 @@ function Navigation({ onCreateClick }) {
         if (item.action) {
             item.action()
         } else if (item.path) {
+            if (isCreateActive && onCloseCreate) onCloseCreate()
             navigate(item.path)
         }
     }
 
+    const allItems = [...navItems, ...bottomItems]
+
+    const isItemActive = (item) => {
+        if (item.label === 'Create' && isCreateActive) return true
+        if (item.path && isActive(item.path) && !isCreateActive) return true
+        return false
+    }
+
     return (
-        <div className={`navSidebar ${collapsed ? 'navCollapsed' : 'navExpanded'}`}>
-            {/* Logo + collapse toggle */}
-            <div className='navHeader'>
-                <div className='navLogoWrap' onClick={() => navigate('/homepage')}>
-                    <img src={Logo} alt='MiniX' className='navLogoImg' />
-                    {!collapsed && <span className='navLogoText'>MiniX</span>}
-                </div>
-                <button className='navCollapseBtn' onClick={() => setCollapsed(prev => !prev)}>
-                    <svg className='navCollapseIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d={collapsed ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'} />
-                    </svg>
-                </button>
-            </div>
-
-            {/* Search */}
-            {!collapsed && (
-                <div className='navSearchWrap'>
-                    <svg className='navSearchIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
-                    </svg>
-                    <input type='text' placeholder='Search' className='navSearchInput' />
-                </div>
-            )}
-            {collapsed && (
-                <button className='navItem mb-3'>
-                    <svg className='navIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
-                    </svg>
-                </button>
-            )}
-
-            {/* Main nav items */}
-            <nav className='navMain'>
-                {navItems.map((item) => (
+        <>
+            {/* Mobile bottom bubble nav */}
+            <div className='mobileBottomNav'>
+                {allItems.map((item) => (
                     <button
                         key={item.label}
-                        className={`navItem ${item.path && isActive(item.path) ? 'navItemActive' : ''}`}
+                        className={`mobileNavBtn ${isItemActive(item) ? 'mobileNavBtnActive' : ''}`}
                         onClick={() => handleClick(item)}
                     >
-                        {item.icon}
-                        {!collapsed && <span className='navLabel'>{item.label}</span>}
-                    </button>
-                ))}
-            </nav>
-
-            {/* Bottom section */}
-            <div className='navBottom'>
-                {bottomItems.map((item) => (
-                    <button
-                        key={item.label}
-                        className={`navItem ${item.path && isActive(item.path) ? 'navItemActive' : ''}`}
-                        onClick={() => handleClick(item)}
-                    >
-                        {item.icon}
-                        {!collapsed && <span className='navLabel'>{item.label}</span>}
-                    </button>
-                ))}
-
-                {/* User profile */}
-                <div className='navProfile'>
-                    <div className='navProfileAvatar'>
-                        {user.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
-                    </div>
-                    {!collapsed && (
-                        <div className='navProfileInfo'>
-                            <p className='navProfileName'>{user.firstName || 'User'} {user.lastName || ''}</p>
-                            <p className='navProfileUsername'>@{user.userName || 'username'}</p>
+                        <div className={`mobileNavBubble ${isItemActive(item) ? 'mobileNavBubbleActive' : ''}`}>
+                            {item.icon}
                         </div>
-                    )}
+                    </button>
+                ))}
+            </div>
+
+            {/* Desktop sidebar */}
+            <div className={`navSidebar ${collapsed ? 'navCollapsed' : 'navExpanded'}`}>
+                {/* Logo + collapse toggle */}
+                <div className='navHeader'>
+                    <div className='navLogoWrap' onClick={() => navigate('/homepage')}>
+                        <img src={Logo} alt='MiniX' className='navLogoImg' />
+                        {!collapsed && <span className='navLogoText'>MiniX</span>}
+                    </div>
+                    <button className='navCollapseBtn' onClick={() => setCollapsed(prev => !prev)}>
+                        <svg className='navCollapseIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d={collapsed ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'} />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Search */}
+                {!collapsed && (
+                    <div className='navSearchWrap'>
+                        <svg className='navSearchIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+                        </svg>
+                        <input type='text' placeholder='Search' className='navSearchInput' />
+                    </div>
+                )}
+                {collapsed && (
+                    <button className='navItem mb-3'>
+                        <svg className='navIcon' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
+                        </svg>
+                    </button>
+                )}
+
+                {/* Main nav items */}
+                <nav className='navMain'>
+                    {navItems.map((item) => (
+                        <button
+                            key={item.label}
+                            className={`navItem ${isItemActive(item) ? 'navItemActive' : ''}`}
+                            onClick={() => handleClick(item)}
+                        >
+                            {item.icon}
+                            {!collapsed && <span className='navLabel'>{item.label}</span>}
+                        </button>
+                    ))}
+                </nav>
+
+                {/* Bottom section */}
+                <div className='navBottom'>
+                    {bottomItems.map((item) => (
+                        <button
+                            key={item.label}
+                            className={`navItem ${item.path && isActive(item.path) ? 'navItemActive' : ''}`}
+                            onClick={() => handleClick(item)}
+                        >
+                            {item.icon}
+                            {!collapsed && <span className='navLabel'>{item.label}</span>}
+                        </button>
+                    ))}
+
+                    {/* User profile */}
+                    <div className='navProfile'>
+                        <div className='navProfileAvatar'>
+                            {user.userName ? user.userName.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                        {!collapsed && (
+                            <div className='navProfileInfo'>
+                                <p className='navProfileName'>{user.firstName || 'User'} {user.lastName || ''}</p>
+                                <p className='navProfileUsername'>@{user.userName || 'username'}</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

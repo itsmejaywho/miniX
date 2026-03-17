@@ -12,36 +12,35 @@
 }
 
 .signupCard {
-    @apply relative w-full max-w-[460px] min-h-[620px] bg-[#1c1c1e] rounded-2xl p-8 flex flex-col gap-6;
+    @apply relative w-full max-w-[460px] min-h-[620px] rounded-2xl p-8 flex flex-col gap-6;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-card);
     animation: fadeSlideIn 0.35s ease-out;
 }
 
-.signupLogoWrap {
-    @apply flex justify-center;
-}
-
-.signupLogoBg {
-    @apply p-2 rounded-xl bg-[#2a2a2e];
-}
-
-.signupLogo {
-    @apply h-8;
-}
-
 .signupTabToggle {
-    @apply flex bg-[#2a2a2e] rounded-full p-1 w-fit mx-auto;
+    @apply flex rounded-full p-1 w-fit mx-auto;
+    background: var(--bg-input);
 }
 
 .signupTabActive {
-    @apply px-5 py-2 rounded-full bg-[#3a3a3e] text-white text-sm font-medium;
+    @apply px-5 py-2 rounded-full text-sm font-medium shadow-sm;
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .signupTabInactive {
-    @apply px-5 py-2 rounded-full text-gray-400 text-sm font-medium hover:text-white transition-colors;
+    @apply px-5 py-2 rounded-full text-sm font-medium transition-colors;
+    color: var(--text-muted);
+}
+
+.signupTabInactive:hover {
+    color: var(--text-primary);
 }
 
 .signupTitle {
-    @apply text-white text-2xl font-semibold text-center;
+    @apply text-2xl font-semibold text-center;
+    color: var(--text-primary);
 }
 
 .signupFields {
@@ -53,15 +52,28 @@
 }
 
 .signupNameInput {
-    @apply w-1/2 bg-[#2a2a2e] text-white placeholder-gray-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-[#7c3aed] transition-all;
+    @apply w-1/2 rounded-lg px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-gray-500 transition-all;
+    background: var(--bg-input);
+    color: var(--text-primary);
+}
+
+.signupNameInput::placeholder {
+    color: var(--text-muted);
 }
 
 .signupFullInput {
-    @apply w-full bg-[#2a2a2e] text-white placeholder-gray-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-[#7c3aed] transition-all;
+    @apply w-full rounded-lg px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-gray-500 transition-all;
+    background: var(--bg-input);
+    color: var(--text-primary);
+}
+
+.signupFullInput::placeholder {
+    color: var(--text-muted);
 }
 
 .signupInputRow {
-    @apply flex items-center bg-[#2a2a2e] rounded-lg px-4 py-3 gap-3;
+    @apply flex items-center rounded-lg px-4 py-3 gap-3;
+    background: var(--bg-input);
 }
 
 .signupInputIcon {
@@ -69,7 +81,12 @@
 }
 
 .signupInput {
-    @apply w-full bg-transparent text-white placeholder-gray-500 text-sm outline-none;
+    @apply w-full bg-transparent text-sm outline-none;
+    color: var(--text-primary);
+}
+
+.signupInput::placeholder {
+    color: var(--text-muted);
 }
 
 .signupShowBtn {
@@ -93,7 +110,13 @@
 }
 
 .signupSubmitBtn {
-    @apply w-full py-3 rounded-lg bg-[#7c3aed] text-white font-medium text-sm tracking-wide hover:bg-[#6d28d9] transition-colors;
+    @apply w-full py-3 rounded-lg font-medium text-sm tracking-wide transition-colors;
+    background: var(--text-primary);
+    color: var(--bg-page);
+}
+
+.signupSubmitBtn:hover {
+    opacity: 0.85;
 }
 
 .signupSubmitBtn.loading {
@@ -113,7 +136,8 @@
 }
 
 .signupDividerLine {
-    @apply grow border-t border-[#2a2a2e];
+    @apply grow;
+    border-top: 1px solid var(--border-main);
 }
 
 .signupDividerText {
@@ -125,7 +149,12 @@
 }
 
 .signupSocialBtn {
-    @apply flex-1 flex items-center justify-center gap-2 bg-[#2a2a2e] hover:bg-[#3a3a3e] rounded-lg py-3 transition-colors;
+    @apply flex-1 flex items-center justify-center gap-2 rounded-lg py-3 transition-colors;
+    background: var(--bg-input);
+}
+
+.signupSocialBtn:hover {
+    background: var(--bg-hover);
 }
 
 .signupSocialIcon {
@@ -133,13 +162,6 @@
 }
 
 .signupSocialIconWhite {
-    @apply w-5 h-5 text-white;
-}
-
-.signupFooter {
-    @apply text-gray-500 text-xs text-center;
-}
-
-.signupFooterLink {
-    @apply text-[#7c3aed] hover:text-[#a78bfa] transition-colors;
+    @apply w-5 h-5;
+    color: var(--text-body);
 }

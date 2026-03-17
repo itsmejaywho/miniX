@@ -90,15 +90,15 @@ function Homepage(){
     }, [])
 
     return(
-        <div className='flex h-screen bg-[#0a0a0a]'>
+        <div className='flex h-screen' style={{background: 'var(--bg-page)'}}>
             {/* Sidebar */}
-            <Navigation onCreateClick={() => setShowCreatePost(true)} />
+            <Navigation onCreateClick={() => setShowCreatePost(true)} isCreateActive={showCreatePost} onCloseCreate={() => setShowCreatePost(false)} />
 
             {/* Main content - center feed */}
-            <div className='flex-1 flex flex-col overflow-hidden relative ml-20 lg:ml-0'>
-                <div className='flex-1 overflow-auto p-4 flex flex-col items-center gap-4'>
+            <div className='flex-1 flex flex-col overflow-hidden relative'>
+                <div className='flex-1 overflow-auto p-4 pb-24 lg:pb-4 flex flex-col items-center gap-4'>
                     {loading ? (
-                        <p className='text-white text-center mt-4'>Loading posts...</p>
+                        <p className='text-center mt-4' style={{color: 'var(--text-secondary)'}}>Loading posts...</p>
                     ) : posts.length > 0 ? (
                         posts.map((post) => (
                             <UserPost 
@@ -110,7 +110,7 @@ function Homepage(){
                             />
                         ))
                     ) : (
-                        <p className='text-white text-center mt-4'>No posts yet. Be the first to post!</p>
+                        <p className='text-center mt-4' style={{color: 'var(--text-secondary)'}}>No posts yet. Be the first to post!</p>
                     )}
                 </div>
 

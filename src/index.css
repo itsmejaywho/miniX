@@ -1,14 +1,40 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --bg-page: #f2f2f7;
+    --bg-card: #ffffff;
+    --bg-input: #f5f5f5;
+    --bg-hover: #ebebeb;
+    --border-main: #e5e5ea;
+    --border-light: #f0f0f0;
+    --text-primary: #1a1a1a;
+    --text-secondary: #8e8e93;
+    --text-body: #3a3a3c;
+    --text-muted: #aeaeb2;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.dark {
+    --bg-page: #0d0d12;
+    --bg-card: #161619;
+    --bg-input: #1e1e24;
+    --bg-hover: #252530;
+    --border-main: #2a2a35;
+    --border-light: #1e1e24;
+    --text-primary: #f5f5f7;
+    --text-secondary: #a0a0b5;
+    --text-body: #c5c5d2;
+    --text-muted: #555565;
+    --shadow-card: 0 2px 8px rgba(0,0,0,0.5);
+}
+
 body {
-    background: linear-gradient(
-    to right,
-    #1a1a1a,
-    #0d1b2a,
-    #1b263b
-    );
+    background: var(--bg-page);
     height: 100vh;
-    color: white;
+    color: var(--text-primary);
+    transition: background-color 0.2s, color 0.2s;
 }
 
 ::-webkit-scrollbar{
@@ -30,4 +56,24 @@ body {
 
 button{
   @apply cursor-pointer
+}
+
+/* Custom thin scrollbar for crypto cards */
+.crypto-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-main) transparent;
+}
+.crypto-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+.crypto-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+.crypto-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-main);
+  border-radius: 10px;
+}
+.crypto-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
